@@ -1,0 +1,31 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+    <title>Rajgruha</title>
+    <meta name="description" content="A private digital library, reader, notebook and quote collection." />
+    <meta name="color-scheme" content="light dark" />
+    <meta name="theme-color" media="(prefers-color-scheme: light)" content="#f7f4ee" />
+    <meta name="theme-color" media="(prefers-color-scheme: dark)" content="#14110d" />
+    <meta name="apple-mobile-web-app-capable" content="yes" />
+    <meta name="mobile-web-app-capable" content="yes" />
+    <meta name="apple-mobile-web-app-title" content="Rajgruha" />
+    <link rel="manifest" href="/manifest.webmanifest" />
+    <link rel="icon" href="/icon.svg" type="image/svg+xml" />
+    <link rel="apple-touch-icon" href="/icon.svg" />
+    <!--app-css-->
+    <!--
+      Sets the theme before first paint, so there is no flash of the wrong colours.
+      Deliberately a blocking external script rather than an inline one: inline code
+      would need a CSP hash that breaks on every edit, or 'unsafe-inline', which
+      would weaken the policy for the whole app.
+    -->
+    <script src="/theme.js"></script>
+    <!--app-script-->
+  </head>
+  <body>
+    <div id="root"></div>
+    <noscript>Rajgruha needs JavaScript to display your library.</noscript>
+  </body>
+</html>

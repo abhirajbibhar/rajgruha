@@ -1,0 +1,19 @@
+{
+  "name": "Rajgruha",
+  "short_name": "Rajgruha",
+  "description": "A private digital library, reader, notebook and quote collection.",
+  "start_url": "/#/",
+  "scope": "/",
+  "display": "standalone",
+  "background_color": "#14110d",
+  "theme_color": "#14110d",
+  "orientation": "any",
+  "icons": [
+    {
+      "src": "/icon.svg",
+      "sizes": "any",
+      "type": "image/svg+xml",
+      "purpose": "any"
+    }
+  ]
+}

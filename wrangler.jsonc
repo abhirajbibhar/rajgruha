@@ -1,0 +1,36 @@
+{
+  "$schema": "node_modules/wrangler/config-schema.json",
+  "name": "rajgruha",
+  "main": "worker/index.ts",
+  "compatibility_date": "2026-10-19",
+  "compatibility_flags": ["nodejs_compat"],
+  "assets": {
+    "directory": "web/dist",
+    "binding": "ASSETS",
+    "not_found_handling": "single-page-application",
+    // Without this, requests that match a static file are answered by the assets
+    // layer and never reach the Worker, which means index.html would ship without
+    // the Content-Security-Policy and anti-clickjacking headers. Routing
+    // everything through the Worker means every response gets them; the assets
+    // themselves are still served from Cloudflare's cache.
+    "run_worker_first": true
+  },
+  "observability": {
+    "enabled": true
+  },
+  "r2_buckets": [
+    {
+      "binding": "LIBRARY",
+      "bucket_name": "rajgruha",
+      // Uncomment for `wrangler dev` against the real bucket instead of local state:
+      // "remote": true
+    }
+  ],
+  "vars": {
+    "APP_NAME": "Rajgruha",
+    "UPLOAD_MAX_BYTES": "52428800"
+  }
+  // SESSION_SECRET must be set as a secret, never in this file:
+  //   npx wrangler secret put SESSION_SECRET
+  // For local development put it in .dev.vars (see .dev.vars.example).
+}

@@ -1,0 +1,36 @@
+{
+  "name": "rajgruha",
+  "version": "1.0.0",
+  "private": true,
+  "type": "module",
+  "description": "Rajgruha - a self-hosted digital library, PDF reader, notebook and quote collection running on Cloudflare Workers with R2 storage.",
+  "engines": {
+    "node": ">=20"
+  },
+  "scripts": {
+    "build": "node scripts/build-web.mjs",
+    "dev": "node scripts/dev.mjs",
+    "typecheck": "tsc -p tsconfig.worker.json --noEmit && tsc -p tsconfig.web.json --noEmit",
+    "test": "vitest run",
+    "test:watch": "vitest",
+    "deploy": "npm run build && wrangler deploy",
+    "cf-typegen": "wrangler types worker/worker-configuration.d.ts"
+  },
+  "dependencies": {
+    "hono": "4.13.14",
+    "jose": "6.2.13"
+  },
+  "devDependencies": {
+    "@cloudflare/workers-types": "5.20261027.1",
+    "@embedpdf/react-pdf-viewer": "2.15.1",
+    "@types/react": "19.3.0",
+    "@types/react-dom": "19.3.0",
+    "esbuild": "0.28.2",
+    "react": "19.1.10",
+    "react-dom": "19.1.10",
+    "typescript": "5.9.3",
+    "vitest": "5.0.5",
+    "workerd": "1.20261019.1",
+    "wrangler": "4.153.0"
+  }
+}
