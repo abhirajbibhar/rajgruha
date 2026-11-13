@@ -1,0 +1,27 @@
+{
+  "$schema": "node_modules/wrangler/config-schema.json",
+  "name": "rajgruha-api",
+  "main": "src/index.ts",
+  "compatibility_date": "2026-10-01",
+  "compatibility_flags": ["nodejs_compat"],
+  // Private: only the web Worker reaches the API (service binding). No public *.workers.dev URL.
+  "workers_dev": false,
+  "preview_urls": false,
+  "observability": { "enabled": true },
+  "d1_databases": [
+    {
+      "binding": "DB",
+      "database_name": "rajgruha",
+      // Run `wrangler d1 create rajgruha` and paste the id here for remote use.
+      "database_id": "00000000-0000-0000-0000-000000000000",
+      "migrations_dir": "migrations"
+    }
+  ],
+  // Optional: book files (EPUB/PDF). Create with `wrangler r2 bucket create rajgruha-books`.
+  "r2_buckets": [{ "binding": "FILES", "bucket_name": "rajgruha-books" }],
+  "vars": {
+    "CORS_ORIGIN": "http://localhost:3000"
+  }
+  // Secrets (not committed):  wrangler secret put JWT_SECRET
+  // Local dev: put JWT_SECRET in apps/api/.dev.vars
+}

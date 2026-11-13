@@ -1,0 +1,29 @@
+{
+  "name": "@rajgruha/api",
+  "version": "0.1.0",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "dev": "wrangler dev --port 8787",
+    "deploy": "wrangler deploy",
+    "typecheck": "tsc -p tsconfig.json",
+    "test": "vitest run --passWithNoTests",
+    "db:migrate:local": "wrangler d1 migrations apply rajgruha --local",
+    "db:migrate:remote": "wrangler d1 migrations apply rajgruha --remote",
+    "cf-typegen": "wrangler types"
+  },
+  "dependencies": {
+    "@rajgruha/shared": "workspace:*",
+    "hono": "^4.13.0",
+    "jose": "^6.2.0",
+    "zod": "^4.6.7"
+  },
+  "devDependencies": {
+    "@cloudflare/workers-types": "^5.20261031.1",
+    "@rajgruha/scripts": "workspace:*",
+    "@types/node": "22",
+    "typescript": "^5.9.0",
+    "vitest": "^3.2.0",
+    "wrangler": "^4.0.0"
+  }
+}

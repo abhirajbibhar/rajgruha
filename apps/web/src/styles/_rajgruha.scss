@@ -1,0 +1,168 @@
+// Rajgruha-specific additions on top of the Gentelella v4 design system.
+// Keep app-only styles here so the ported partials stay diff-able against gen-lib.
+
+// ── Settings: mobile section bar ───────────────────────────────────
+.settings-bar { display: none; }
+.settings-section { scroll-margin-top: calc(var(--topbar-h) + 64px); }
+@media (max-width: 900px) {
+  .settings-nav { display: none; }
+  .settings-bar {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    position: sticky;
+    top: var(--topbar-h);
+    z-index: 20;
+    margin: 0 0 14px;
+    padding: 8px 10px;
+    background: var(--bg-surface);
+    border: 1px solid var(--border-color);
+    border-radius: var(--radius-md, 8px);
+    box-shadow: var(--shadow-sm, 0 1px 2px rgba(0, 0, 0, .06));
+  }
+  .settings-bar label { font-size: 11px; font-weight: 600; text-transform: uppercase; letter-spacing: .5px; color: var(--text-muted); }
+  .settings-bar select { flex: 1; min-width: 0; height: 36px; }
+  .settings-bar .count { font-size: 11.5px; color: var(--text-muted); white-space: nowrap; }
+}
+
+// ── Truncation / scrolling tables ──────────────────────────────────
+.table-scroll { max-height: min(64vh, 620px); overflow: auto; border-top: 1px solid var(--border-color); }
+.table-scroll .table thead th { position: sticky; top: 0; z-index: 1; background: var(--bg-surface-secondary, var(--bg-surface)); }
+.cell-trunc { display: block; max-width: 24ch; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.cell-trunc.wide { max-width: 34ch; }
+@media (max-width: 600px) { .cell-trunc { max-width: 20ch; } }
+
+// ── Dropdown filter panel ──────────────────────────────────────────
+.filter-wrap { position: relative; }
+.filter-panel {
+  position: absolute; top: calc(100% + 6px); left: 0; z-index: 40;
+  width: min(320px, calc(100vw - 32px)); padding: 14px;
+  background: var(--bg-surface); border: 1px solid var(--border-color);
+  border-radius: var(--radius-lg); box-shadow: var(--shadow-lg, 0 12px 32px rgba(0, 0, 0, .18));
+  display: grid; gap: 12px;
+}
+.filter-panel .form-label { margin-bottom: 4px; }
+.filter-count { display: inline-grid; place-items: center; min-width: 18px; height: 18px; padding: 0 5px; margin-left: 6px; border-radius: 9px; background: var(--primary); color: #fff; font-size: 10.5px; font-weight: 600; }
+
+// ── Tabs ───────────────────────────────────────────────────────────
+.tabs { display: flex; gap: 4px; border-bottom: 1px solid var(--border-color); margin-bottom: 16px; overflow-x: auto; }
+.tabs button {
+  appearance: none; background: none; border: 0; padding: 10px 14px; font: inherit; font-size: 13px; font-weight: 500;
+  color: var(--text-muted); cursor: pointer; border-bottom: 2px solid transparent; margin-bottom: -1px; white-space: nowrap;
+}
+.tabs button:hover { color: var(--text); }
+.tabs button[aria-selected='true'] { color: var(--primary); border-bottom-color: var(--primary); }
+.toc-list { list-style: none; margin: 0; padding: 0; }
+.toc-list li a, .toc-list li button {
+  display: flex; align-items: baseline; gap: 10px; width: 100%; padding: 9px 4px; background: none; border: 0; border-bottom: 1px solid var(--border-color-light);
+  font: inherit; font-size: 13.5px; color: var(--text); text-align: left; text-decoration: none; cursor: pointer;
+}
+.toc-list li a:hover, .toc-list li button:hover { color: var(--primary); }
+.toc-list .n { width: 26px; flex: none; font-size: 11.5px; color: var(--text-muted); font-variant-numeric: tabular-nums; }
+.toc-list .sub { padding-left: 22px; font-size: 12.5px; color: var(--text-secondary); }
+
+// ── Reader chrome (follows theme tokens) ───────────────────────────
+.reader-bar {
+  position: absolute; inset-inline: 0; bottom: 0; height: 44px; display: flex; align-items: center; justify-content: space-between; gap: 8px;
+  padding: 0 12px; background: var(--bg-surface); border-top: 1px solid var(--border-color); color: var(--text);
+}
+.reader-bar .mid { display: flex; align-items: center; gap: 8px; font-size: 12px; color: var(--text-muted); min-width: 0; }
+.reader-bar select { max-width: 40vw; height: 30px; }
+.reader-epub { position: absolute; inset: 0 0 44px 0; background: var(--bg-surface); }
+
+// ── Charts (analytics) ─────────────────────────────────────────────
+.card .card-body svg.rg-chart, svg.rg-chart { width: 100%; height: auto; display: block; }
+.rg-chart text { fill: var(--text-muted); font-size: 10.5px; font-family: inherit; }
+.rg-chart .grid { stroke: var(--border-color-light); stroke-width: 1; }
+.rg-chart .bar { fill: var(--primary); }
+.rg-chart .bar:hover { fill: var(--primary-dk); }
+.heat { display: grid; grid-auto-flow: column; grid-template-rows: repeat(7, auto); gap: 3px; }
+.heat i { display: block; aspect-ratio: 1; border-radius: 3px; background: var(--bg-surface-secondary, #eef1f4); }
+.heat i[data-l='1'] { background: color-mix(in srgb, var(--primary) 28%, transparent); }
+.heat i[data-l='2'] { background: color-mix(in srgb, var(--primary) 52%, transparent); }
+.heat i[data-l='3'] { background: color-mix(in srgb, var(--primary) 76%, transparent); }
+.heat i[data-l='4'] { background: var(--primary); }
+.legend { display: flex; flex-wrap: wrap; gap: 6px 14px; font-size: 12px; color: var(--text-secondary); }
+.legend .sw { display: inline-block; width: 9px; height: 9px; border-radius: 2px; margin-right: 6px; }
+
+// ── Reading log: calendar + day panel ──────────────────────────────
+.log-layout { display: grid; grid-template-columns: minmax(0, 1.5fr) minmax(0, 1fr); gap: 18px; align-items: start; }
+@media (max-width: 900px) { .log-layout { grid-template-columns: minmax(0, 1fr); } }
+.rl-cal { display: grid; grid-template-columns: repeat(7, minmax(0, 1fr)); gap: 4px; }
+.rl-cal .dow { font-size: 10.5px; font-weight: 600; text-transform: uppercase; letter-spacing: .4px; color: var(--text-muted); text-align: center; padding: 4px 0; }
+.rl-day {
+  position: relative; aspect-ratio: 1 / 1; min-height: 44px; padding: 5px; display: flex; flex-direction: column; justify-content: space-between;
+  border: 1px solid var(--border-color-light); border-radius: var(--radius-md, 8px); background: var(--bg-surface); color: var(--text); font: inherit; text-align: left; cursor: pointer;
+}
+.rl-day:hover { border-color: var(--primary); }
+.rl-day.out { opacity: .38; }
+.rl-day.today .d { color: var(--primary); font-weight: 700; }
+.rl-day.sel { outline: 2px solid var(--primary); outline-offset: -1px; }
+.rl-day .d { font-size: 12px; }
+.rl-day .m { font-size: 10.5px; color: var(--text-secondary); line-height: 1.1; }
+.rl-day .dots { display: flex; gap: 3px; }
+.rl-day .dots i { width: 5px; height: 5px; border-radius: 50%; background: var(--yellow); }
+.rl-day[data-l='1'] { background: color-mix(in srgb, var(--primary) 12%, var(--bg-surface)); }
+.rl-day[data-l='2'] { background: color-mix(in srgb, var(--primary) 24%, var(--bg-surface)); }
+.rl-day[data-l='3'] { background: color-mix(in srgb, var(--primary) 38%, var(--bg-surface)); }
+.rl-day[data-l='4'] { background: color-mix(in srgb, var(--primary) 54%, var(--bg-surface)); }
+@media (max-width: 600px) { .rl-day { min-height: 40px; padding: 3px; } .rl-day .m { display: none; } }
+.note-row { display: flex; align-items: flex-start; gap: 10px; padding: 8px 0; border-bottom: 1px solid var(--border-color-light); font-size: 13px; }
+.note-row.done .t { text-decoration: line-through; color: var(--text-muted); }
+.note-row .t { flex: 1; min-width: 0; overflow-wrap: anywhere; }
+.note-row button.x { background: none; border: 0; color: var(--text-muted); cursor: pointer; padding: 2px 6px; font-size: 16px; line-height: 1; }
+.note-row button.x:hover { color: var(--red); }
+
+// ── Upload / file browser ──────────────────────────────────────────
+.dropzone {
+  border: 2px dashed var(--border-color); border-radius: var(--radius-lg); padding: 28px 16px; text-align: center; background: var(--bg-surface-secondary, transparent); transition: border-color .12s, background .12s;
+}
+.dropzone.over { border-color: var(--primary); background: var(--primary-lt); }
+.dropzone .actions { display: flex; flex-wrap: wrap; gap: 8px; justify-content: center; margin-top: 12px; }
+.up-row { display: grid; grid-template-columns: minmax(0, 1.4fr) minmax(0, 1fr) 110px 28px; gap: 8px; align-items: center; padding: 8px 0; border-bottom: 1px solid var(--border-color-light); font-size: 12.5px; }
+.up-row .path { color: var(--text-muted); font-size: 11px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+@media (max-width: 700px) { .up-row { grid-template-columns: minmax(0, 1fr) 90px 24px; } .up-row .author { grid-column: 1 / -1; order: 5; } }
+.progress-line { height: 4px; border-radius: 2px; background: var(--border-color-light); overflow: hidden; }
+.progress-line > i { display: block; height: 100%; background: var(--primary); transition: width .2s; }
+.fb-row { display: flex; align-items: center; gap: 12px; padding: 10px 14px; border-bottom: 1px solid var(--border-color-light); min-width: 0; }
+.fb-row:hover { background: var(--bg-surface-secondary); }
+.fb-row .ic { flex: none; width: 34px; height: 34px; border-radius: 8px; display: grid; place-items: center; background: var(--primary-lt); color: var(--primary); }
+.fb-row .nm { flex: 1; min-width: 0; }
+.fb-row .nm strong { display: block; font-size: 13.5px; font-weight: 500; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.fb-row .nm span { font-size: 11.5px; color: var(--text-muted); }
+.fb-row .acts { display: flex; gap: 6px; flex: none; }
+@media (max-width: 600px) { .fb-row .acts .btn span { display: none; } }
+.scan-video { width: 100%; max-height: 320px; background: #000; border-radius: var(--radius-lg); }
+
+// ── Search box usable outside .catalog-toolbar ─────────────────────
+.inline-search { position: relative; }
+.inline-search svg { position: absolute; inset-inline-start: 9px; top: 50%; transform: translateY(-50%); width: 14px; height: 14px; color: var(--text-muted); pointer-events: none; }
+.inline-search input {
+  width: 220px; max-width: 100%; height: 32px; padding: 0 10px 0 30px; border: 1px solid var(--border-color);
+  border-radius: var(--radius-sm); background: var(--bg-surface); color: var(--text); font-size: 12.5px;
+}
+.inline-search input:focus { outline: none; border-color: var(--primary); box-shadow: 0 0 0 3px var(--primary-lt); }
+@media (max-width: 600px) { .inline-search, .inline-search input { width: 100%; } }
+
+// gen-lib's board only scrolls below 1100px, but 4×260px columns don't fit until ~1370px.
+.kanban-board { overflow-x: auto; padding-bottom: 8px; }
+
+// ── Chapter (outline) editor ───────────────────────────────────────
+.ol-row { display: grid; grid-template-columns: minmax(0, 1fr) 84px auto; gap: 8px; align-items: center; padding: 6px 0; border-bottom: 1px solid var(--border-color-light); }
+.ol-row .t { display: flex; align-items: center; min-width: 0; }
+.ol-row .t::before { content: ''; flex: none; width: calc(var(--lvl, 0) * 22px); }
+.ol-row .t input { min-width: 0; }
+.ol-row .acts { display: flex; gap: 2px; }
+.ol-row .acts button { background: none; border: 1px solid transparent; border-radius: 6px; width: 28px; height: 28px; color: var(--text-muted); cursor: pointer; font-size: 14px; line-height: 1; }
+.ol-row .acts button:hover:not(:disabled) { background: var(--bg-surface-secondary); color: var(--text); border-color: var(--border-color); }
+.ol-row .acts button:disabled { opacity: .3; cursor: default; }
+@media (max-width: 700px) { .ol-row { grid-template-columns: minmax(0, 1fr) 76px; } .ol-row .acts { grid-column: 1 / -1; justify-content: flex-end; } }
+.notice { padding: 10px 12px; border-radius: var(--radius-md, 8px); font-size: 13px; line-height: 1.5; border: 1px solid var(--border-color); background: var(--bg-surface-secondary); }
+.notice.err { border-color: var(--red); color: var(--red); }
+.notice.ok { border-color: var(--green); }
+.notice.warn { border-color: var(--yellow); }
+
+// ── Acquisitions: five columns (gen-lib's board has four) ──────────
+.kanban-board.five { grid-template-columns: repeat(5, minmax(240px, 1fr)); overflow-x: auto; }
+@media (max-width: 1100px) { .kanban-board.five { grid-template-columns: repeat(5, minmax(240px, 280px)); } }
+.kanban-card[draggable='true'] { cursor: grab; }

@@ -1,0 +1,496 @@
+// Digital library demo components: book covers, shelves, reading progress.
+// Cover art ships as static images in public/images/covers (one SVG per
+// title) so the cards show real artwork, not a painted gradient.
+
+// ────────────────────────
+//  BOOK COVER
+// ────────────────────────
+.book-cover {
+  display: block;
+  width: 100%;
+  // The width/height attributes on <img> are presentational hints: without
+  // height:auto the 720px height attribute wins and object-fit crops the art.
+  height: auto;
+  aspect-ratio: 2 / 3;
+  object-fit: cover;
+  border-radius: var(--radius-sm);
+  background: var(--bg-surface-secondary);
+  box-shadow:
+    0 1px 2px rgba(16, 24, 40, 0.18),
+    0 10px 18px -12px rgba(16, 24, 40, 0.55);
+  transition: box-shadow 160ms;
+}
+
+// Compact cover for rows and lists
+.book-cover.sm {
+  width: 46px;
+  flex-shrink: 0;
+  border-radius: var(--radius-sm);
+}
+
+// ────────────────────────
+//  BOOK CARD / SHELF
+// ────────────────────────
+.book-shelf {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
+  gap: 22px 16px;
+}
+
+.book-card {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  min-width: 0;
+  padding: 8px;
+  color: inherit;
+  text-decoration: none;
+  background: var(--bg-surface);
+  border: 1px solid var(--border-color);
+  border-radius: var(--radius-lg);
+  transition: box-shadow 200ms, transform 200ms, border-color 200ms;
+}
+.book-card:hover {
+  text-decoration: none;
+  border-color: var(--border-translucent);
+  box-shadow:
+    0 0 0 1px var(--border-translucent),
+    0 2px 4px -2px rgba(17, 24, 39, 0.12),
+    0 20px 32px -24px rgba(17, 24, 39, 0.7);
+  transform: translateY(-3px);
+}
+
+// Art wrapper: keeps the flag and hover CTA clipped to the cover
+.book-card-art {
+  position: relative;
+  display: block;
+  color: inherit;
+  text-decoration: none;
+  border-radius: var(--radius-sm);
+}
+.book-card-art:hover { text-decoration: none; }
+.book-card-art::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  z-index: 1;
+  border-radius: inherit;
+  pointer-events: none;
+  background: linear-gradient(0deg, rgba(6, 11, 18, 0.6), rgba(6, 11, 18, 0) 52%);
+  opacity: 0;
+  transition: opacity 200ms;
+}
+.book-card:hover .book-card-art::after,
+.book-card-art:focus-visible::after { opacity: 1; }
+
+.book-card-cta {
+  position: absolute;
+  inset-inline: 10px;
+  bottom: 10px;
+  z-index: 2;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 26px;
+  border-radius: 999px;
+  background: rgba(255, 255, 255, 0.94);
+  color: #1e2633;
+  font-size: 10.5px;
+  font-weight: 700;
+  letter-spacing: 0.5px;
+  text-transform: uppercase;
+  opacity: 0;
+  transform: translateY(6px);
+  transition: opacity 200ms, transform 200ms;
+}
+.book-card:hover .book-card-cta,
+.book-card-art:focus-visible .book-card-cta {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+.book-card-art > .book-cover,
+.book-card > .book-cover {
+  width: 100%;
+  transition: transform 220ms cubic-bezier(0.2, 0.7, 0.2, 1), box-shadow 220ms;
+}
+.book-card:hover .book-cover {
+  box-shadow:
+    0 2px 5px rgba(16, 24, 40, 0.22),
+    0 18px 28px -14px rgba(16, 24, 40, 0.7);
+  transform: translateY(-2px) scale(1.012);
+}
+
+.book-card-body {
+  display: flex;
+  flex-direction: column;
+  flex: 1;
+  min-width: 0;
+  padding: 10px 3px 4px;
+}
+
+.book-card .book-title,
+.book-card-body .book-title {
+  margin-top: 0;
+  min-height: 2.6em;
+  font-size: 13px;
+  font-weight: var(--font-weight-bold);
+  line-height: 1.32;
+  letter-spacing: -0.1px;
+  color: var(--text);
+  text-decoration: none;
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+  transition: color 150ms;
+}
+.book-card:hover .book-title { color: var(--primary-dk); }
+
+.book-card .book-author,
+.book-card-body .book-author {
+  margin-top: 3px;
+  font-size: 11.5px;
+  line-height: 1.35;
+  color: var(--text-muted);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.book-card-foot {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 6px;
+  margin-top: 9px;
+}
+.book-card-foot .format-tag { flex-shrink: 0; }
+
+// Legacy card layout (cover → title → author → badges) still supported
+.book-card > .book-cover { margin-bottom: 2px; }
+.book-card .book-badges {
+  display: flex;
+  gap: 4px;
+  margin-top: 9px;
+  padding-top: 8px;
+  border-top: 1px solid var(--border-color-light);
+  flex-wrap: wrap;
+}
+
+// Rating line under a cover
+.book-rating {
+  display: inline-flex;
+  align-items: baseline;
+  gap: 3px;
+  font-size: 10.5px;
+  font-weight: var(--font-weight-medium);
+  color: var(--yellow);
+  letter-spacing: 0.2px;
+  white-space: nowrap;
+}
+.book-rating span { color: var(--text-muted); margin-inline-start: 3px; }
+.book-rating .count {
+  margin-inline-start: 2px;
+  font-weight: 400;
+  font-size: 10px;
+  color: var(--text-disabled);
+}
+.book-card .book-rating + .availability { margin-top: 3px; }
+
+.book-card-progress { margin-top: 9px; }
+.book-card-progress .reading-progress { height: 4px; }
+.book-card-progress .continue-sub { margin-top: 5px; font-size: 10.5px; }
+.book-card-status {
+  display: flex;
+  align-items: center;
+  gap: 5px;
+  margin-top: 9px;
+  font-size: 10.5px;
+  color: var(--text-muted);
+}
+.book-card-status .dot {
+  width: 5px;
+  height: 5px;
+  border-radius: 50%;
+  background: var(--green);
+}
+.book-card-status.reading .dot { background: var(--primary); }
+.book-card-status.queued .dot { background: var(--yellow); }
+.book-card-status.finished .dot { background: var(--azure); }
+
+// Cover corner label (e.g. "New", "Audiobook")
+.book-flag {
+  position: absolute;
+  top: 8px;
+  inset-inline-end: 8px;
+  z-index: 2;
+  padding: 2px 6px;
+  border-radius: 3px;
+  background: rgba(10, 16, 24, 0.55);
+  backdrop-filter: blur(4px);
+  color: #fff;
+  font-size: 8.5px;
+  font-weight: 600;
+  letter-spacing: 0.6px;
+  text-transform: uppercase;
+}
+
+// ────────────────────────
+//  FORMAT TAGS
+// ────────────────────────
+.format-tag {
+  display: inline-flex;
+  align-items: center;
+  height: 18px;
+  padding: 0 5px;
+  border: 1px solid var(--border-color);
+  border-radius: 3px;
+  background: var(--bg-surface-secondary);
+  color: var(--text-secondary);
+  font-size: 9.5px;
+  font-weight: 600;
+  letter-spacing: 0.4px;
+  text-transform: uppercase;
+  white-space: nowrap;
+}
+.format-tag.epub  { color: var(--green);  border-color: rgba(47, 179, 68, 0.3);  background: var(--green-lt); }
+.format-tag.pdf   { color: var(--red);    border-color: rgba(214, 57, 57, 0.3);  background: var(--red-lt); }
+.format-tag.audio { color: var(--purple); border-color: rgba(174, 62, 201, 0.3); background: var(--purple-lt); }
+
+// ────────────────────────
+//  CONTINUE READING ROWS
+// ────────────────────────
+.continue-item {
+  display: flex;
+  align-items: center;
+  gap: var(--space-3);
+  padding: 11px 0;
+  border-bottom: 1px solid var(--border-color-light);
+}
+.continue-item:last-child { border-bottom: none; }
+.continue-meta { flex: 1; min-width: 0; }
+.continue-title {
+  font-size: 13px;
+  font-weight: var(--font-weight-medium);
+  color: var(--text);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+.continue-author {
+  margin-bottom: 7px;
+  font-size: 11.5px;
+  color: var(--text-muted);
+}
+.reading-progress {
+  height: 5px;
+  border-radius: 3px;
+  overflow: hidden;
+  background: var(--border-color-light);
+}
+.reading-progress .fill {
+  height: 100%;
+  border-radius: 3px;
+  background: var(--primary);
+}
+.continue-sub {
+  display: flex;
+  justify-content: space-between;
+  gap: 8px;
+  margin-top: 5px;
+  font-size: 11px;
+  color: var(--text-muted);
+}
+
+// ────────────────────────
+//  BOOK DETAIL
+// ────────────────────────
+.book-hero {
+  display: grid;
+  grid-template-columns: 300px minmax(0, 1fr);
+  gap: var(--space-5);
+  align-items: start;
+}
+@media (max-width: 900px) {
+  .book-hero { grid-template-columns: 1fr; }
+}
+
+.book-hero-art {
+  padding: var(--space-5) var(--space-4);
+  border-radius: var(--radius-lg);
+  background:
+    radial-gradient(120% 90% at 20% 0%, var(--primary-lt), transparent 60%),
+    linear-gradient(160deg, var(--bg-surface-secondary), var(--bg-surface));
+  display: flex;
+  justify-content: center;
+}
+.book-hero-art .book-cover { width: 196px; }
+
+.book-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--space-2);
+  margin: var(--space-4) 0 var(--space-3);
+}
+.book-actions .btn { flex: 1 1 auto; }
+
+.book-meta-grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: var(--space-3) var(--space-4);
+  font-size: 12.5px;
+}
+.book-meta-grid .k {
+  font-size: 10.5px;
+  font-weight: 600;
+  letter-spacing: 0.5px;
+  text-transform: uppercase;
+  color: var(--text-muted);
+  margin-bottom: 1px;
+}
+.book-meta-grid .v { color: var(--text); }
+
+// ────────────────────────
+//  READING STREAK
+// ────────────────────────
+.streak-days {
+  display: grid;
+  grid-template-columns: repeat(7, minmax(0, 1fr));
+  gap: 6px;
+  margin-top: var(--space-4);
+}
+.streak-day { text-align: center; }
+.streak-day .sq {
+  height: 34px;
+  border-radius: var(--radius-sm);
+  background: var(--border-color-light);
+}
+.streak-day .sq.l1 { background: var(--primary-lt); }
+.streak-day .sq.l2 { background: rgba(26, 187, 156, 0.35); }
+.streak-day .sq.l3 { background: rgba(26, 187, 156, 0.6); }
+.streak-day .sq.l4 { background: var(--primary); }
+.streak-day .d {
+  margin-top: 5px;
+  font-size: 10px;
+  color: var(--text-muted);
+}
+
+// ────────────────────────
+//  CATALOG TOOLBAR
+// ────────────────────────
+.catalog-toolbar {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: var(--space-2);
+}
+.catalog-toolbar .catalog-search {
+  position: relative;
+  margin-inline-start: auto;
+}
+.catalog-toolbar .catalog-search svg {
+  position: absolute;
+  inset-inline-start: 9px;
+  top: 50%;
+  transform: translateY(-50%);
+  width: 14px;
+  height: 14px;
+  color: var(--text-muted);
+  pointer-events: none;
+}
+.catalog-toolbar .catalog-search input {
+  width: 220px;
+  height: 32px;
+  padding: 0 10px 0 30px;
+  border: 1px solid var(--border-color);
+  border-radius: var(--radius-sm);
+  background: var(--bg-surface);
+  color: var(--text);
+  font-size: 12.5px;
+}
+[dir='rtl'] .catalog-toolbar .catalog-search input { padding: 0 30px 0 10px; }
+.catalog-toolbar .catalog-search input:focus {
+  outline: none;
+  border-color: var(--primary);
+  box-shadow: 0 0 0 3px var(--primary-lt);
+}
+
+// ────────────────────────
+//  READER
+// ────────────────────────
+// The reader is the whole content area: no page padding, no card, no toolbar,
+// no footer — just the shell around the document. The stage is pushed down by
+// the topbar's height so the viewer never slides underneath the fixed header,
+// and it takes exactly the rest of the viewport.
+body[data-page='reader'] .footer { display: none; }
+body[data-page='reader'] .main { padding-top: 0; }
+
+.reader-page {
+  height: 100vh;
+  height: 100dvh;
+  overflow: hidden;
+  background: var(--bg-surface-secondary);
+}
+
+.reader-stage {
+  position: relative;
+  margin-top: var(--topbar-h);
+  height: calc(100vh - var(--topbar-h));
+  height: calc(100dvh - var(--topbar-h));
+  overflow: hidden;
+  background: var(--bg-surface-secondary);
+}
+#pdf-viewer {
+  position: absolute;
+  inset: 0;
+}
+#pdf-viewer > * { height: 100%; }
+
+.reader-loading {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  font-size: 12.5px;
+  color: var(--text-muted);
+  background: var(--bg-surface-secondary);
+}
+.reader-spinner {
+  width: 14px;
+  height: 14px;
+  border-radius: 50%;
+  border: 2px solid var(--border-color);
+  border-top-color: var(--primary);
+  animation: reader-spin 700ms linear infinite;
+}
+@keyframes reader-spin { to { transform: rotate(360deg); } }
+
+// Genre rows reuse the visitor-row layout with a colour square instead of a flag
+.genre-list .visitor-row .dot {
+  width: 8px;
+  height: 8px;
+  border-radius: 2px;
+  flex-shrink: 0;
+}
+
+// Availability dot
+.availability {
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  font-size: 10.5px;
+  color: var(--text-muted);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+.availability .dot {
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: var(--green);
+}
+.availability.waiting .dot { background: var(--yellow); }

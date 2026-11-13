@@ -1,0 +1,14 @@
+packages:
+  - apps/*
+  - packages/*
+  - scripts
+
+# pnpm 12 reads build-script policy from here; the "pnpm" block in package.json
+# is no longer honoured. Same four packages you allowed before.
+allowBuilds:
+  esbuild: true
+  workerd: true
+  '@parcel/watcher': true
+  sharp: true
+  core-js: false # postinstall only prints a funding banner
+  es5-ext: false # same

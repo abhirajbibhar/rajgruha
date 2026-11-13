@@ -1,0 +1,13 @@
+{
+  // The public Worker: serves the React app and forwards /api/* to the private API Worker.
+  "$schema": "node_modules/wrangler/config-schema.json",
+  "name": "rajgruha-web",
+  "main": "src/server.ts",
+  "compatibility_date": "2026-10-01",
+  "compatibility_flags": ["nodejs_compat"],
+  "observability": { "enabled": true },
+  "services": [{ "binding": "API", "service": "rajgruha-api" }]
+
+  // Custom domain (optional) — add once the domain is on your Cloudflare account:
+  // "routes": [{ "pattern": "library.example.com", "custom_domain": true }]
+}

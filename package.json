@@ -1,0 +1,38 @@
+{
+  "name": "rajgruha",
+  "private": true,
+  "version": "0.1.0",
+  "type": "module",
+  "packageManager": "pnpm@12.16.1",
+  "engines": {
+    "node": ">=22"
+  },
+  "scripts": {
+    "dev": "pnpm --parallel --filter @rajgruha/api --filter @rajgruha/web dev",
+    "dev:api": "pnpm --filter @rajgruha/api dev",
+    "dev:web": "pnpm --filter @rajgruha/web dev",
+    "build": "pnpm -r build",
+    "typecheck": "pnpm -r typecheck",
+    "lint": "eslint .",
+    "format": "prettier --write .",
+    "test": "pnpm -r test",
+    "db:migrate:local": "pnpm --filter @rajgruha/api db:migrate:local",
+    "db:migrate:remote": "pnpm --filter @rajgruha/api db:migrate:remote",
+    "bootstrap-admin": "pnpm --filter @rajgruha/scripts bootstrap-admin",
+    "import:folder": "pnpm --filter @rajgruha/scripts import:folder",
+    "import:calibre": "pnpm --filter @rajgruha/scripts import:calibre",
+    "backup:d1": "pnpm --filter @rajgruha/scripts backup:d1",
+    "deploy:api": "pnpm --filter @rajgruha/api run deploy",
+    "deploy:web": "pnpm --filter @rajgruha/web run deploy",
+    "deploy:all": "pnpm deploy:api && pnpm deploy:web",
+    "preview:cf": "pnpm --filter @rajgruha/web run preview:cf",
+    "purge-demo": "pnpm --filter @rajgruha/scripts purge-demo"
+  },
+  "devDependencies": {
+    "@eslint/js": "^9.0.0",
+    "eslint": "^9.0.0",
+    "prettier": "^3.3.0",
+    "typescript": "^5.9.0",
+    "typescript-eslint": "^8.0.0"
+  }
+}

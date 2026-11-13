@@ -1,0 +1,17 @@
+// Gentelella 2026 v4 — main entry
+// Self-contained design system, no Bootstrap (uses own .row/.col-* grid).
+
+@use "tokens";
+@use "layout";
+@use "components";
+@use "forms";
+@use "widgets";
+@use "pages";
+@use "library";
+@use "datatable";
+@use "auth";
+@use "apps";
+// Last: RTL overrides only fix what logical properties can't express
+// (transforms, background-position, box-shadow), so they must win the cascade.
+@use "rajgruha";
+@use "rtl";

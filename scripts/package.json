@@ -1,0 +1,22 @@
+{
+  "name": "@rajgruha/scripts",
+  "version": "0.1.0",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "bootstrap-admin": "tsx src/bootstrap-admin.ts",
+    "import:folder": "tsx src/import-folder.ts",
+    "import:calibre": "tsx src/import-calibre.ts",
+    "backup:d1": "tsx src/backup-d1.ts",
+    "typecheck": "tsc -p tsconfig.json",
+    "purge-demo": "tsx src/purge-demo.ts"
+  },
+  "dependencies": {
+    "@rajgruha/shared": "workspace:*"
+  },
+  "devDependencies": {
+    "@types/node": "22",
+    "tsx": "^4.20.0",
+    "typescript": "^5.9.0"
+  }
+}
